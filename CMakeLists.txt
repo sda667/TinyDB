@@ -3,7 +3,7 @@ project(tinydb)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_executable(tinydb main.cpp db.c db.h student.c student.h query.c query.h parsing.c parsing.h utils.c utils.h)
+add_executable(tinydb main.cpp db.cpp db.h student.cpp student.h query.cpp query.h parsing.cpp parsing.h utils.cpp utils.h)
 
 
 
