@@ -1,4 +1,7 @@
 //
+// Created by Ali Bahja on 18/10/2022.
+//
+//
 // Created by Ali Bahja on 14/10/2022.
 //
 
@@ -12,3 +15,4 @@ void query_result_init(query_result_t* result, const char* query) {
     result->status = QUERY_SUCCESS;
     // Votre code ici
 }
+

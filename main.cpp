@@ -1,5 +1,4 @@
-#include <cstdio>
-
+#include <vector>
 #include "db.h"
 
 int main(int argc, char const *argv[]) {

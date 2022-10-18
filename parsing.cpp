@@ -1,12 +1,14 @@
 //
+// Created by Ali Bahja on 18/10/2022.
+//
+//
 // Created by Ali Bahja on 14/10/2022.
 //
 
 #include "parsing.h"
-
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
+#include <cstdlib>
+#include <cstring>
+#include <ctime>
 
 #include "student.h"
 
