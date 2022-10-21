@@ -7,9 +7,8 @@
 
 #include "db.h"
 #include <vector>
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
+#include <cstdio>
+#include <cstdlib>
 #include <altivec.h>
 #include "student.h"
 
@@ -40,7 +39,7 @@ void db_load(database_t *db, const char *path) {
 }
 
 void db_init(database_t *db) {
-    std::vector<int> v1;
+    db->data = new student_t[10000];
 
 }
 

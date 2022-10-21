@@ -11,11 +11,11 @@
 /**
  * Database structure type.
  */
-typedef struct {
+using database_t = struct {
     student_t *data; /** The list of students **/
     size_t lsize;    /** The logical size of the list **/
     size_t psize;    /** The physical size of the list **/
-} database_t;
+};
 
 /**
  *  Add a student to the database.

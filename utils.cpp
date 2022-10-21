@@ -3,7 +3,7 @@
 //
 
 #include "utils.h"
-
+#include <fstream>
 #include <unistd.h>
 
 #include "query.h"
@@ -28,26 +28,30 @@ size_t safe_write(int fd, const void* buffer, size_t nbytes) {
 }
 
 void log_query(query_result_t* result) {
-    char buffer[512];
+    std::string buffer ;
     if (result->status == QUERY_SUCCESS) {
-        char filename[512];
-        char type[256];
-        strcpy(type, result->query);
+        std::string filename;
+        std::string type = result->query;
         type[6] = '\0';
-        sprintf(filename, "logs/%ld-%s.txt", result->start_ns, type);
-        printf("%s\n", filename);
-        FILE* f = fopen(filename, "w");
-        float duration = (float)(result->end_ns - result->start_ns) / 1.0e6;
-        sprintf(buffer, "Query \"%s\" completed in %fms with %ld results.\n", result->query, duration, result->lsize);
-        fwrite(buffer, sizeof(char), strlen(buffer), f);
+        std::cout << filename << "logs/%ld-%s.txt"<< result->start_ns<< type <<std::endl; // used instead of printf(filename,"logs/%ld-%s.txt", result->start_ns, type)
+        std::cout <<"%s\n"<< filename<<std::endl;
+        std::ofstream f(filename);
+        //FILE* f = fopen(filename, "w")
+        double duration = (float)(result->end_ns - result->start_ns) / 1.0e6;
+        buffer+= "Query \"%s\" completed in %fms with %ld results.\n";
+        buffer+= result->query;
+        buffer+= std::to_string(duration);
+        buffer+= std::to_string(result->lsize);
+        f<< buffer;
+       // fwrite(buffer, sizeof(char), strlen(buffer), f)
         if (result->lsize > 0) {
             for (int i = 0; i < result->lsize; i++) {
                 student_to_str(buffer, &result->students[i]);
-                fwrite(buffer, sizeof(char), strlen(buffer), f);
-                fwrite("\n", sizeof(char), 1, f);
+                buffer += "\n";
+                f<< buffer;
             }
         }
-        fclose(f);
+        f.close();
     } else if (result->status == UNRECOGNISED_FIELD) {
         fprintf(stderr, "Unrecognized field in query %s\n", result->query);
     }

@@ -5,7 +5,7 @@
 #define _GNU_SOURCE /* Required to work with strptime, which is OS-dependent */
 #endif
 
-#include <stdbool.h>
+
 
 #include "student.h"
 
