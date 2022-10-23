@@ -20,7 +20,7 @@ using database_t = struct {
 /**
  *  Add a student to the database.
  **/
-void db_add(database_t *db, student_t s);
+void db_add(database_t *db, student_t s, unsigned int& array_length);
 
 /**
  * Save the content of a database_t in the specified file.

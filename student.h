@@ -24,7 +24,7 @@ using student_t = struct {
 /**
  * @brief Convert a student to a human-readlable string.
  **/
-void student_to_str(std::string buffer, student_t* s);
+void student_to_str(std::string *buffer, student_t* s);
 
 /**
  * @brief Return whether two students are equal or not.

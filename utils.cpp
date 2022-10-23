@@ -32,21 +32,15 @@ void log_query(query_result_t* result) {
     if (result->status == QUERY_SUCCESS) {
         std::string filename;
         std::string type = result->query;
-        type[6] = '\0';
-        std::cout << filename << "logs/%ld-%s.txt"<< result->start_ns<< type <<std::endl; // used instead of printf(filename,"logs/%ld-%s.txt", result->start_ns, type)
-        std::cout <<"%s\n"<< filename<<std::endl;
-        std::ofstream f(filename);
-        //FILE* f = fopen(filename, "w")
+        filename=  "logs/" + std::to_string(result->start_ns) + "-" + type + ".txt" + "\n"; //s2 : used instead of printf(filename,"logs/%ld-%s.txt", result->start_ns, type)
+        std::cout << filename <<std::endl;
+        std::ofstream f(filename);  // s3 : instead of FILE* f = fopen(filename, "w")
         double duration = (float)(result->end_ns - result->start_ns) / 1.0e6;
-        buffer+= "Query \"%s\" completed in %fms with %ld results.\n";
-        buffer+= result->query;
-        buffer+= std::to_string(duration);
-        buffer+= std::to_string(result->lsize);
+        buffer = "Query " + type + " completed in "+ std::to_string(duration) + "s with " +std::to_string(result->lsize)+ " results.\n";
         f<< buffer;
-       // fwrite(buffer, sizeof(char), strlen(buffer), f)
         if (result->lsize > 0) {
             for (int i = 0; i < result->lsize; i++) {
-                student_to_str(buffer, &result->students[i]);
+                student_to_str(&buffer, &result->students[i]);
                 buffer += "\n";
                 f<< buffer;
             }

@@ -32,17 +32,24 @@ void db_load(database_t *db, const char *path) {
         exit(1);
     }
     student_t student;
+    unsigned int array_length = 0;  //e1 : array_length sert comme rèpere dans le array pour ajouter les students un apres un
     while (fread(&student, sizeof(student_t),1, file)) {
-        db_add(db, student);
+        db_add(db, student, array_length);
     }
     fclose(file);
 }
 
 void db_init(database_t *db) {
-    db->data = new student_t[10000];
+    db->data = new student_t[1.0e6];    //s1 :on peut changer le type de student_t par std::vector<student_t> comme ça c plus facile à gerer la database
+    db->lsize = 0;
+    db->psize = 0;
+
 
 }
 
-void db_add(database_t *db, student_t student) {
-    //code
+void db_add(database_t *db, student_t const &student,unsigned int& array_length) {
+    db->data[array_length] = student;   //s1 :on supprime donc le array_lenght
+    db->lsize += 1;
+    db->psize += sizeof(student);
+    array_length += 1;
 }
