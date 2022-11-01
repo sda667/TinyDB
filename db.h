@@ -6,13 +6,15 @@
 #ifndef _DB_H
 #define _DB_H
 
+#include <vector>
 #include "student.h"
 
 /**
  * Database structure type.
  */
 using database_t = struct {
-    student_t *data; /** The list of students **/
+    std::vector<student_t> *data;
+    //student_t *data; /** The list of students **/
     size_t lsize;    /** The logical size of the list **/
     size_t psize;    /** The physical size of the list **/
 };
@@ -20,7 +22,7 @@ using database_t = struct {
 /**
  *  Add a student to the database.
  **/
-void db_add(database_t *db, student_t s, unsigned int& array_length);
+void db_add(database_t *db, student_t s);
 
 /**
  * Save the content of a database_t in the specified file.

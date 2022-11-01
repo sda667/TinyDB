@@ -5,9 +5,6 @@
 #ifndef _STUDENT_H
 #define _STUDENT_H
 #include <iostream>
-//#include <stdio.h>
-//#include <ctype.h>
-//#include <string.h>
 #include <ctime>
 
 /**
@@ -15,9 +12,12 @@
  **/
 using student_t = struct {
     unsigned id;         /** Unique ID **/
-    std::string fname;      /** Firstname **/
-    std::string lname;      /** Lastname **/
-    std::string section;    /** Section **/
+    char fname[64];      /** Firstname **/
+    char lname[64];      /** Lastname **/
+    char section[64];
+    //std::string fname;      /** Firstname **/
+    //std::string lname;      /** Lastname **/
+    //std::string section;    /** Section **/
     struct tm birthdate; /** Birth date **/
 };
 

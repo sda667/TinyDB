@@ -4,10 +4,6 @@
 
 #include "student.h"
 
-#include <cctype>
-#include <cstdio>
-#include <cstring>
-#include <ctime>
 
 void student_to_str(std::string *buffer, student_t* s) {
     // Your code here
