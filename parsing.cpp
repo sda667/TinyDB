@@ -42,8 +42,7 @@ bool parse_insert(char* query, char* fname, char* lname, unsigned* id, char* sec
     }
     strcpy(fname, token);
     token = strtok_r(NULL, " ", &query);
-    if (token == NULL) {
-        return false;
+    if (token == NULL) {return false;
     }
     strcpy(lname, token);
     token = strtok_r(NULL, " ", &query);
@@ -71,11 +70,18 @@ bool parse_selectors(char* query, char* field, char* value) {
     if (token == NULL) {
         return false;
     }
+    char* last = strchr(token,' ');// returns the field of the query
+    if (last != NULL){
+        token = last+1;
+    }
+
     strcpy(field, token);
-    token = strtok_r(NULL, "=", &query);
+    token = strtok_r(NULL, " ", &query);
     if (token == NULL) {
         return false;
     }
     strcpy(value, token);
     return true;
 }
+
+

@@ -9,7 +9,7 @@
 #include <ctime>
 
 
-void select_query(std::string champs, std::string valeur);
+
 
 void query_result_init(query_result_t* result, const char* query) {
     struct timespec now{};

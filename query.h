@@ -31,18 +31,18 @@ void query_result_add(query_result_t* result, student_t s);
 /**
  * add a new student to the database
  */
-void insert_query(std::string fname, std::string lname,std::string id, std::string section, std::string birthday);
+void insert_query(database_t *db,std::string fname, std::string lname,std::string id, std::string section, std::string birthday);
 /**
  * Filter and return a list of the wanted students
  */
-void select_query(std::string champs, std::string valeur);
+void select_query(database_t *db,std::string champs, std::string valeur);
 /**
  * Delete all the filtered students
  */
-void delete_query(std::string champs, std::string valeur);
+void delete_query(database_t *db,std::string champs, std::string valeur);
 /**
  * Update all the filtered students with the wanted value
  */
- void update_query(std::string filtre, std::string valeur,std::string champs_modifie, std::string champs_modefiee );
+ void update_query(database_t *db,std::string filtre, std::string valeur,std::string champs_modifie, std::string champs_modefiee );
 
 #endif
