@@ -9,7 +9,7 @@ using QUERY_STATUS = enum { QUERY_SUCCESS, QUERY_FAILURE, UNRECOGNISED_FIELD };
  * A query_result_t describes the result of a query.
  */
 using query_result_t = struct {
-    student_t* students; /** A list of students **/
+    std::vector<student_t>* students; /** A list of students **/
     size_t lsize;        /** Logical size **/
     size_t psize;        /** Physical size **/
     QUERY_STATUS status; /** The return status of the query **/
@@ -31,11 +31,11 @@ void query_result_add(query_result_t* result, student_t s);
 /**
  * add a new student to the database
  */
-void insert_query(database_t *db,std::string fname, std::string lname,std::string id, std::string section, std::string birthday);
+query_result_t insert_query(database_t *db, std::string fname, std::string lname, unsigned int id, std::string section,struct tm birthday);
 /**
  * Filter and return a list of the wanted students
  */
-void select_query(database_t *db,std::string champs, std::string valeur);
+void select_query(database_t *db,std::string champs, std::string valeur);//TODO: change the return type to query_result_t and initialise the query_result
 /**
  * Delete all the filtered students
  */

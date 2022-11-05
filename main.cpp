@@ -57,11 +57,22 @@ int main(int argc, char const *argv[]) {
         wait(nullptr);
         std::string buffer;
         std::cout<<"insert "<<getpid()<<"pere "<<getppid()<<std::endl;
+        close(maininsert[WRITE]);
+        read(maininsert[READ],&buffer, sizeof(buffer));
         if (buffer == "insert") {
-            printf("process insert\n");
-            for (int i = 0; i<50; i++){
-                printf("selecting...");
-            }
+            std::string fname;
+            std::string lname;
+            unsigned id;
+            std::string section;
+            struct tm birthday;
+            read(maininsert[READ],&fname,sizeof(fname));
+            read(maininsert[READ],&lname,sizeof(lname));
+            read(maininsert[READ],&id,sizeof(id));
+            read(maininsert[READ],&section, sizeof(section));
+            read(maininsert[READ],&birthday, sizeof(birthday));
+            insert_query(&db,fname,lname,id,section,birthday);
+
+
         }}
 
     else if (pid_t p_update = fork();p_update ==0){
