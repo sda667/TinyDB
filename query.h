@@ -35,7 +35,7 @@ query_result_t insert_query(database_t *db, std::string fname, std::string lname
 /**
  * Filter and return a list of the wanted students
  */
-void select_query(database_t *db,std::string champs, std::string valeur);//TODO: change the return type to query_result_t and initialise the query_result
+query_result_t select_query(database_t *db,std::string champs, std::string valeur);
 /**
  * Delete all the filtered students
  */

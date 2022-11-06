@@ -5,7 +5,7 @@
 #include "utils.h"
 #include <fstream>
 #include <unistd.h>
-
+#include <vector>
 #include "query.h"
 #include "student.h"
 
@@ -40,7 +40,7 @@ void log_query(query_result_t* result) {
         f<< buffer;
         if (result->lsize > 0) {
             for (int i = 0; i < result->lsize; i++) {
-                student_to_str(&buffer, &result->students[i]);
+                student_to_str(buffer,&result->students->at(i));
                 buffer += "\n";
                 f<< buffer;
             }

@@ -13,6 +13,7 @@
 #include "student.h"
 
 bool parse_update(char* query, char* field_filter, char* value_filter, char* field_to_update, char* update_value) {
+    strtok_r(NULL, " ", &query);    //discards the query keyword(first word)
     char* key_val_filter = strtok_r(NULL, " ", &query);  // key=val filter
     if (key_val_filter == NULL) {
         return false;
@@ -36,7 +37,7 @@ bool parse_update(char* query, char* field_filter, char* value_filter, char* fie
 }
 
 bool parse_insert(char* query, char* fname, char* lname, unsigned* id, char* section, struct tm* birthdate) {
-    char* token = strtok_r(NULL, " ", &query);
+    char* token = strtok_r(NULL, " ", &query);  //discards the query keyword(first word)
     if (token == NULL) {
         return false;
     }
@@ -70,7 +71,7 @@ bool parse_insert(char* query, char* fname, char* lname, unsigned* id, char* sec
 }
 
 bool parse_selectors(char* query, char* field, char* value) {
-    char* token = strtok_r(NULL, "=", &query);
+    char* token = strtok_r(NULL, "=", &query);//discards the query keyword(first word)
     if (token == NULL) {
         return false;
     }

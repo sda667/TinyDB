@@ -8,7 +8,8 @@
 #include "query.h"
 #include "db.h"
 #include <ctime>
-
+#include <iomanip>
+#include <sstream>
 
 query_result_t insert_query(database_t *db, std::string fname, std::string lname, unsigned int id, std::string section,struct tm birthday){
     query_result_t res;
@@ -30,6 +31,49 @@ query_result_t insert_query(database_t *db, std::string fname, std::string lname
     res.lsize +=1;
     res.psize += sizeof(newstudent);
     res.students->push_back(newstudent);
+    clock_gettime(CLOCK_REALTIME, &now);
+    res.end_ns = now.tv_nsec + 1e9 * now.tv_sec;
+    return res;
+}
+
+
+query_result_t select_query(database_t *db,std::string champs, std::string valeur){
+    query_result_t res;
+    struct timespec now{};
+    clock_gettime(CLOCK_REALTIME, &now);
+    res.start_ns = now.tv_nsec + 1e9 * now.tv_sec;
+
+    if (champs == "fname"){
+        for(int i = 0; i < db->lsize; i++){
+            if (db->data->at(i).fname == valeur){
+                res.students->push_back(db->data->at(i));
+            }
+        }
+    }
+    else if(champs == "lname") {
+        for (int i = 0; i < db->lsize; i++) {
+            if (db->data->at(i).lname == valeur) {
+                res.students->push_back(db->data->at(i));
+            }
+        }
+    }
+    else if(champs == "section") {
+        for (int i = 0; i < db->lsize; i++) {
+            if (db->data->at(i).section == valeur) {
+                res.students->push_back(db->data->at(i));
+            }
+        }
+    }
+    else if(champs == "birthdate") {
+        for (int i = 0; i < db->lsize; i++) {
+            std::ostringstream timetm ;
+            timetm << std::put_time(&db->data->at(i).birthdate,"%d-%m-%Y");
+            std::string timestr = timetm.str(); //convert birthday date from tm to str and then compare them
+            if ( timestr ==valeur) {
+                res.students->push_back(db->data->at(i));
+            }
+        }
+    }
     clock_gettime(CLOCK_REALTIME, &now);
     res.end_ns = now.tv_nsec + 1e9 * now.tv_sec;
     return res;

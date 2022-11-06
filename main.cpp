@@ -72,7 +72,6 @@ int main(int argc, char const *argv[]) {
             read(maininsert[READ],&birthday, sizeof(birthday));
             insert_query(&db,fname,lname,id,section,birthday);
 
-
         }}
 
     else if (pid_t p_update = fork();p_update ==0){
