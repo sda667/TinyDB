@@ -12,14 +12,12 @@
  **/
 using student_t = struct {
     unsigned id;         /** Unique ID **/
-    //char fname[64];      /** Firstname **/
-    //char lname[64];      /** Lastname **/
-   // char section[64];
     std::string fname;      /** Firstname **/
     std::string lname;      /** Lastname **/
     std::string section;    /** Section **/
     struct tm birthdate; /** Birth date **/
 };
+
 
 /**
  * @brief Convert a student to a human-readlable string.

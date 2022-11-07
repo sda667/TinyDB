@@ -10,8 +10,8 @@ using QUERY_STATUS = enum { QUERY_SUCCESS, QUERY_FAILURE, UNRECOGNISED_FIELD };
  */
 using query_result_t = struct {
     std::vector<student_t>* students; /** A list of students **/
-    size_t lsize;        /** Logical size **/
-    size_t psize;        /** Physical size **/
+    size_t lsize ;        /** Logical size **/
+    size_t psize ;        /** Physical size **/
     QUERY_STATUS status; /** The return status of the query **/
     char *query;     /** The actual query that was submitted **/
     long start_ns;       /** The start of the query in nanoseconds **/
@@ -39,10 +39,10 @@ query_result_t select_query(database_t *db,std::string champs, std::string valeu
 /**
  * Delete all the filtered students
  */
-void delete_query(database_t *db,std::string champs, std::string valeur);
+query_result_t delete_query(database_t *db,std::string champs, std::string valeur);
 /**
  * Update all the filtered students with the wanted value
  */
- void update_query(database_t *db,std::string filtre, std::string valeur,std::string champs_modifie, std::string champs_modefiee );
+query_result_t update_query(database_t *db,std::string filtre, std::string valeur,std::string champs_modifie, std::string champs_modefiee );
 
 #endif

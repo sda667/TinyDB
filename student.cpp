@@ -16,6 +16,11 @@ void student_to_str(std::string &buffer, student_t *s) {
 }
 
 int student_equals(student_t* s1, student_t* s2) {
-    // Your code here
-    return 0;
+    if (s1->id != s2->id){
+        return 1;
+    }
+    else{
+      return 0;
+    }
+
 }

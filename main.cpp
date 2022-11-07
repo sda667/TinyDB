@@ -13,7 +13,9 @@ int main(int argc, char const *argv[]) {
     const char *db_path = "students.bin";
     database_t db;
     db_init(&db);
+    std::cout<<"Loading the database..."<<std::endl;
     db_load(&db, db_path);
+    std::cout<<"Done"<<std::endl;
     char commande[256] = "";//stocks the commands entred in the terminal
     int maindelete[2];
     int mainupdate[2];
@@ -25,8 +27,8 @@ int main(int argc, char const *argv[]) {
     pipe(mainupdate);
     if (pid_t p_delete = fork(); p_delete==0){
         //the delete process
+        wait(nullptr);
         std::string buffer;
-        std::cout<<"delete "<<getpid()<<"pere "<<getppid()<<std::endl;
         close(maindelete[WRITE]);
         read(maindelete[READ],&buffer, sizeof(buffer));
         if (buffer == "delete"){
@@ -40,8 +42,8 @@ int main(int argc, char const *argv[]) {
 
     else if (pid_t p_select = fork();p_select == 0){
         //the select process
+        wait(nullptr);
         std::string buffer;
-        std::cout<<"select "<<getpid()<<"pere "<<getppid()<<std::endl;
         close(mainselect[WRITE]);
         read(mainselect[READ],&buffer, sizeof(buffer));
         if (buffer == "select"){
@@ -51,12 +53,12 @@ int main(int argc, char const *argv[]) {
             read(mainselect[READ],&value, sizeof(value));
             close(mainselect[READ]);
             select_query(&db,field,value);
+            std::cout<<"selected"<<std::endl;
         }}
     else if (pid_t p_insert = fork();p_insert==0){
             //the insert process
         wait(nullptr);
         std::string buffer;
-        std::cout<<"insert "<<getpid()<<"pere "<<getppid()<<std::endl;
         close(maininsert[WRITE]);
         read(maininsert[READ],&buffer, sizeof(buffer));
         if (buffer == "insert") {
@@ -76,6 +78,7 @@ int main(int argc, char const *argv[]) {
 
     else if (pid_t p_update = fork();p_update ==0){
             //the update process
+            wait(nullptr);
         std::string buffer;
         std::cout<<"update "<<getpid()<<"pere "<<getppid()<<std::endl;
         close(mainupdate[WRITE]);
