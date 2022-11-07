@@ -7,10 +7,18 @@
 #include <time.h>
 #define READ 0
 #define WRITE 1
+#include <signal.h>
 
+void handler(int signal_r){
+    if (signal_r == SIGINT){
+    std::cout<<"ctrl+c was pressed"<<std::endl;
+        exit(0);
 
+    }
+}
 int main(int argc, char const *argv[]) {
     const char *db_path = "students.bin";
+    //const char *db_path = argv[1];
     database_t db;
     db_init(&db);
     std::cout<<"Loading the database..."<<std::endl;
@@ -32,13 +40,13 @@ int main(int argc, char const *argv[]) {
         close(maindelete[WRITE]);
         read(maindelete[READ],&buffer, sizeof(buffer));
         if (buffer == "delete"){
-            std::string field;
-            std::string value;
+            char field[256];
+            char value[256];
             read(maindelete[READ],&field, sizeof(field));
             read(maindelete[READ],&value, sizeof(value));
             close(maindelete[READ]);
             delete_query(&db,field,value);
-        }
+        }}
 
     else if (pid_t p_select = fork();p_select == 0){
         //the select process
@@ -47,13 +55,12 @@ int main(int argc, char const *argv[]) {
         close(mainselect[WRITE]);
         read(mainselect[READ],&buffer, sizeof(buffer));
         if (buffer == "select"){
-            std::string field;
-            std::string value;
+            char field[256];
+            char value[256];
             read(mainselect[READ],&field, sizeof(field));
             read(mainselect[READ],&value, sizeof(value));
             close(mainselect[READ]);
             select_query(&db,field,value);
-            std::cout<<"selected"<<std::endl;
         }}
     else if (pid_t p_insert = fork();p_insert==0){
             //the insert process
@@ -62,16 +69,17 @@ int main(int argc, char const *argv[]) {
         close(maininsert[WRITE]);
         read(maininsert[READ],&buffer, sizeof(buffer));
         if (buffer == "insert") {
-            std::string fname;
-            std::string lname;
+            char fname[256];
+            char lname[256];
             unsigned id;
-            std::string section;
+            char section[256];
             struct tm birthday;
             read(maininsert[READ],&fname,sizeof(fname));
             read(maininsert[READ],&lname,sizeof(lname));
             read(maininsert[READ],&id,sizeof(id));
             read(maininsert[READ],&section, sizeof(section));
             read(maininsert[READ],&birthday, sizeof(birthday));
+            close(maininsert[READ]);
             insert_query(&db,fname,lname,id,section,birthday);
 
         }}
@@ -80,11 +88,11 @@ int main(int argc, char const *argv[]) {
             //the update process
             wait(nullptr);
         std::string buffer;
-        std::cout<<"update "<<getpid()<<"pere "<<getppid()<<std::endl;
         close(mainupdate[WRITE]);
         read(mainupdate[READ],&buffer, sizeof(buffer));
         if (buffer == "update"){
-            std::string field; std::string value; std::string changed_field; std::string updated_value;
+            char field[256];
+            char value[256]; char changed_field[256]; char updated_value[256];
             read(mainupdate[READ],&field, sizeof(field));
             read(mainupdate[READ],&value, sizeof(value));
             read(mainupdate[READ],&changed_field, sizeof(changed_field));
@@ -93,7 +101,10 @@ int main(int argc, char const *argv[]) {
             update_query(&db,field,value,changed_field,updated_value); }
         }
     else{//the main process
-        std::cout<<"pere "<<getpid()<<"pere "<<getppid()<<std::endl;
+        if (signal(SIGINT,handler)){
+            db_save(&db, db_path);
+            printf("Bye bye!\n");
+        }
         while (fgets(commande, sizeof(commande),stdin) != NULL){
             std::string query = commande;// stocks the query command
             query.resize(6);
@@ -152,10 +163,8 @@ int main(int argc, char const *argv[]) {
 
         }
 
-    }
+
     while (wait(NULL) != -1|| errno != ECHILD  ){
         printf("waited for child ");
     }
-    db_save(&db, db_path);
-    printf("Bye bye!\n");
 }

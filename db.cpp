@@ -24,15 +24,17 @@ void db_save(database_t *db, const char *path) {
     }
     fclose(f);
 }
-
 void db_load(database_t *db, const char *path) {
     FILE *file = fopen(path, "rb");
     if (!file) {
         perror("Could not open the DB file");
         exit(1);
     }
-    student_t student;
-    while (fread(&student, sizeof(student_t),1, file)) {
+    student_char studentchar; // c-style array string
+    student_t student;//std::string c++-style string
+    while (fread(&studentchar, sizeof(student_char),1, file)) {
+        student.id = studentchar.id; student.fname = studentchar.fname; student.lname = studentchar.lname;
+        student.section = studentchar.section;  student.birthdate = studentchar.birthdate;
         db_add(db, student);
     }
     fclose(file);
@@ -47,7 +49,8 @@ void db_init(database_t *db) {
 }
 
 void db_add(database_t *db, student_t student) {
-    db->data->insert(db->data->end(),student);
+    db->data->push_back(student);
+    //db->data->insert(db->data->end(),student);
     db->lsize += 1;
     db->psize += sizeof(student);
 }
